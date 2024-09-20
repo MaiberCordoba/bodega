@@ -20,4 +20,5 @@ from apps.registro.api.views import RegistroApiView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/registro', RegistroApiView.as_view())
+    
 ]
