@@ -12,10 +12,14 @@ class RegistroApiSet(ViewSet):
     
         serializer = RegistroSerializer(Registro.objects.all(), many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
-    def retrieve(self,request,pk=int):
-        serializer = RegistroSerializer(Registro.objects.get(pk=pk))
-        return Response(status=status.HTTP_200_OK, data=serializer.data)
     
+    def retrieve(self,request,pk=int):
+        try:
+            serializer = RegistroSerializer(Registro.objects.get(pk=pk))
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        except Registro.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST,data=("dato no encotrado"))
+        
     #def post(self,request):
     def create(self,request):
         serializer = RegistroSerializer(data=request.data)
