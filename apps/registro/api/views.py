@@ -22,3 +22,28 @@ class RegistroApiSet(ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+    
+    def update(self,request,pk):
+        try:
+            serializer = Registro.objects.get(pk=pk)
+            serializer = RegistroSerializer(serializer,data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(status=status.HTTP_200_OK,data=serializer.data)
+        except Registro.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND,data=("salida no encontrada."))
+        
+    def partial_update(self,request,pk):
+        try:
+            serializer = Registro.objects.get(pk=pk)
+            serializer = RegistroSerializer(serializer,data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(status=status.HTTP_200_OK,data=serializer.data)
+        except Registro.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND,data=("salida no encontrada."))
+        
+    def destroy(self,request,pk):
+            serializer = Registro.objects.get(pk=pk)
+            serializer.delete()
+            return Response(status=status.HTTP_200_OK)
